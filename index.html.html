@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Clones Carpistes 🥇🎣</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Rajdhani:wght@300;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --neon-blue: #00d4f5;
+      --neon-gold: #ffd700;
+      --carpe-dark: #0a0f2b;
+      --gradient-night: linear-gradient(135deg, #0a0f2b 0%, #1a1f4a 50%, #2a3f6b 100%);
+      --dayko-color: #00c8ff;
+      --dp57-color: #ffd700;
+      --sponsor-blue: #1e3a8a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--gradient-night);
+      font-family: 'Rajdhani', sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .cursor {
+      position: fixed;
+      width: 20px; height: 20px;
+      background: radial-gradient(circle, var(--neon-blue), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: difference;
+    }
+
+    /* NAVBAR - MENU BURGER PLUS JOLIE */
+    .navbar {
+      position: fixed; top: 0; width: 100%;
+      backdrop-filter: blur(20px); background: rgba(10,15,43,0.9);
+      padding: 1rem 0; z-index: 1000;
+      border-bottom: 1px solid rgba(0,245,255,0.5);
+      box-shadow: 0 4px 20px rgba(0,212,245,0.2);
+    }
+
+    .nav-container {
+      max-width:1200px; margin:auto; display:flex; justify-content:space-between; padding:0 2rem; align-items:center;
+    }
+
+    /* Burger Menu AMÉLIORÉ */
+    .burger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      z-index: 1001;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .burger:hover {
+      background: rgba(0,212,245,0.2);
+      box-shadow: 0 0 20px rgba(0,212,245,0.4);
+    }
+
+    .burger div {
+      width: 28px;
+      height: 3px;
+      background: var(--neon-blue);
+      border-radius: 3px;
+      transition: 0.3s;
+      box-shadow: 0 0 8px rgba(0,212,245,0.5);
+    }
+
+    .burger.active div:nth-child(1) {
+      transform: rotate(-45deg) translate(-6px, 6px);
+    }
+
+    .burger.active div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .burger.active div:nth-child(3) {
+      transform: rotate(45deg) translate(-6px, -6px);
+    }
+
+    /* MENU BURGER PLUS JOLIE */
+    .nav-links {
+      position: fixed;
+      top: 80px;
+      right: -280px;
+      width: 280px;
+      height: calc(100vh - 80px);
+      background: linear-gradient(135deg, rgba(10,15,43,0.98), rgba(26,31,74,0.95));
+      backdrop-filter: blur(25px);
+      flex-direction: column;
+      padding: 2.5rem 2rem;
+      gap: 1.2rem;
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-left: 2px solid rgba(0,245,255,0.4);
+      box-shadow: -10px 0 40px rgba(0,212,245,0.3);
+    }
+
+    .nav-links.active {
+      right: 0;
+    }
+
+    .nav-links::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -2px;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--neon-blue), var(--neon-gold));
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from { height: 0; }
+      to { height: 100%; }
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 15vw, 12rem);
+      color: #00c8ff;
+      text-shadow: 0 0 20px rgba(0,200,255,0.8), 0 0 40px rgba(0,200,255,0.4);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      animation: neonPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonPulse {
+      from { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
+      to { filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7)) brightness(1.1); }
+    }
+
+    .hero-subtitle {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.2rem, 4vw, 3rem);
+      margin-top: 1rem;
+      background: linear-gradient(45deg, white, var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0.9;
+    }
+
+    /* BOUTONS RÉSEAUX SOCIAUX COMME AVANT */
+    .neon-btn {
+      display: inline-block;
+      padding: 0.7rem 1.6rem;
+      background: transparent;
+      color: var(--neon-blue);
+      border: 2px solid var(--neon-blue);
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      margin: 0.2rem;
+    }
+
+    .neon-btn:hover {
+      color: var(--carpe-dark);
+      background: var(--neon-blue);
+      box-shadow: 0 0 25px var(--neon-blue);
+      transform: translateY(-2px);
+    }
+
+    /* Boutons burger en block */
+    .nav-links .neon-btn {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      border-radius: 15px;
+    }
+
+    .sponsor-btn {
+      background: linear-gradient(45deg, var(--neon-blue), var(--dayko-color));
+      color: var(--carpe-dark) !important;
+      border: 2px solid var(--neon-blue) !important;
+      font-weight: 700 !important;
+      padding: 0.9rem 2rem !important;
+      font-size: 1rem !important;
+    }
+
+    .sponsor-btn:hover {
+      background: var(--neon-blue) !important;
+      box-shadow: 0 0 25px var(--neon-blue) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .clones-section {
+      padding: 100px 20px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .clones-title {
+      text-align: center;
+      font-family: 'Orbitron';
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      background: linear-gradient(45deg, var(--neon-gold), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 3rem;
+    }
+
+    .clones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .clone-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,245,255,0.3);
+      transition: all 0.4s ease;
+    }
+
+    .clone-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      border-color: var(--neon-gold);
+      box-shadow: 0 0 40px rgba(255,215,0,0.3);
+    }
+
+    .clone-photo {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+    }
+
+    .clone-name {
+      font-family: 'Rajdhani';
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--neon-gold), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0.5rem 0;
+    }
+
+    .products-section {
+      padding: 100px 20px;
+      background: rgba(30, 58, 138, 0.15);
+      position: relative;
+      border: 2px solid rgba(0, 245, 255, 0.4);
+      border-radius: 20px;
+    }
+
+    .products-title {
+      text-align: center;
+      font-family: 'Orbitron';
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      background: linear-gradient(45deg, var(--neon-blue), var(--dayko-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4rem;
+      text-shadow: 0 0 20px var(--neon-blue);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .product-card {
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(0,245,255,0.3);
+      border-radius: 25px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      transition: all 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::before {
+      content: '👑 SPONSOR OFFICIEL';
+      position: absolute;
+      top: 15px; right: 15px;
+      background: var(--neon-blue);
+      color: var(--carpe-dark);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    .product-card:hover::before {
+      opacity: 1;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--neon-blue);
+      box-shadow: 0 20px 40px rgba(0,245,255,0.4);
+    }
+
+    .product-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 8px 20px rgba(0,245,255,0.4));
+    }
+
+    .product-card:hover .product-photo {
+      filter: drop-shadow(0 15px 30px rgba(0,245,255,0.6));
+    }
+
+    .product-name {
+      font-family: 'Rajdhani';
+      font-weight: 900;
+      font-size: 1.8rem;
+      background: linear-gradient(45deg, var(--neon-blue), var(--dayko-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    /* ENDURO KID'S CHALLENGE */
+    .enduro-contact {
+      padding: 80px 20px;
+      text-align: center;
+      background: rgba(34,139,34,0.15);
+      border: 2px solid rgba(0,245,255,0.4);
+      border-radius: 20px;
+      margin: 2rem 0;
+    }
+
+    .enduro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: auto;
+      align-items: center;
+    }
+
+    .enduro-item {
+      background: rgba(255,255,255,0.08);
+      padding: 2rem;
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(0,245,255,0.3);
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .enduro-item:hover {
+      transform: translateY(-10px);
+      border-color: var(--neon-gold);
+      box-shadow: 0 20px 40px rgba(255,215,0,0.4);
+    }
+
+    .enduro-title {
+      font-family: 'Orbitron';
+      font-size: clamp(2rem, 6vw, 3rem);
+      background: linear-gradient(45deg, var(--neon-gold), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 20px var(--neon-gold);
+    }
+
+    .enduro-subtitle {
+      font-family: 'Oswald';
+      font-size: 1.3rem;
+      opacity: 0.95;
+      margin-top: 1rem;
+      line-height: 1.4;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: rgba(0,0,0,0.6);
+    }
+
+    footer a { 
+      color: var(--neon-gold); 
+      text-decoration: none; 
+      margin: 0 1.5rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .cursor { display: none; }
+      .products-grid, .clones-grid { grid-template-columns: 1fr; }
+      .enduro-grid { 
+        grid-template-columns: 1fr; 
+        gap: 2rem; 
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div style="font-family:'Orbitron'; font-size:1.5rem; font-weight:900;">🥇 ENZO & ENZO</div>
+      <div class="burger" id="burger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#clones" class="neon-btn">👯‍♂️ Le Duo</a>
+        <a href="#products" class="neon-btn">🛒 Sponsors</a>
+        <a href="#enduro" class="neon-btn">🏆 Enduro</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1 class="hero-title">LE DUO ENZO</h1>
+      <p class="hero-subtitle">👯‍♂️ Les Clones Carpistes 🥇<br>Futurs Champions de France - 2026</p>
+    </div>
+  </section>
+
+  <!-- CLONES -->
+  <section id="clones" class="clones-section">
+    <h2 class="clones-title">👯‍♂️ LES CLONES</h2>
+    <div class="clones-grid">
+      <div class="clone-card">
+        <img src="https://i.ibb.co/svcdftyK/Capture-d-cran-2026-01-30-105537.png" class="clone-photo" alt="Enzo Ducher">
+        <h3 class="clone-name">ENZO DUCHER</h3>
+        <p style="opacity:0.9; line-height:1.5;">🩷🖤 Ambassadeur Emmacarpe37<br>🎣 La Gaule Amboisienne<br>⚡ DP Plomb 57</p>
+        <div style="margin-top:1.5rem;">
+          <a href="https://www.instagram.com/emmacarpe37.officiel/" class="neon-btn" target="_blank">Ambassadeur</a>
+          <a href="https://www.instagram.com/enzo_ducher/" class="neon-btn" target="_blank">INSTA</a>
+          <a href="https://www.tiktok.com/@enzo_ducher_37" class="neon-btn" target="_blank">TIKTOK</a>
+        </div>
+      </div>
+
+      <div class="clone-card">
+        <img src="https://i.ibb.co/d4t5zf1V/Capture-d-cran-2026-01-30-104537.png" class="clone-photo" alt="Enzo Sainton">
+        <h3 class="clone-name">ENZO SAINTON</h3>
+        <p style="opacity:0.9; line-height:1.5;">🥇 Compétiteur National<br>🎣 La Gaule Amboisienne<br>🎬 Perchette Challenge</p>
+        <div style="margin-top:1.5rem;">
+          <a href="https://www.youtube.com/@Lapecheetlacarpe-ck9ze" class="neon-btn" target="_blank">YOUTUBE</a>
+          <a href="https://www.instagram.com/enzo_sainton/" class="neon-btn" target="_blank">INSTA</a>
+          <a href="https://www.tiktok.com/@enzo.sainton" class="neon-btn" target="_blank">TIKTOK</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUITS SPONSORS + EMMACARPE -->
+  <section id="products" class="products-section">
+    <h2 class="products-title">🛒 PRODUITS SPONSORS OFFICIELS</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <img src="https://i.ibb.co/7xND6G32/Capture-d-cran-2026-01-30-113553.png" class="product-photo" alt="Dayko Bitubo">
+        <h3 class="product-name">DAYKO BITUBO</h3>
+        <p style="opacity:0.95; margin-bottom:1.5rem; font-size:1.1rem;">
+          Rod Pod Aluminium Aéro<br>
+          <span style="color:var(--dayko-color);"> Qualiter au Top • Fabriqué en Italie</span>
+        </p>
+        <a href="https://dp-plomb.fr/" class="neon-btn sponsor-btn" target="_blank">
+          → SITE OFFICIEL
+        </a>
+      </div>
+
+      <div class="product-card">
+        <img src="https://i.ibb.co/Gfxfm9vb/Capture-d-cran-2026-01-30-113617.png" class="product-photo" alt="DP Plombs 57">
+        <h3 class="product-name">DP PLOMBS 57</h3>
+        <p style="opacity:0.95; margin-bottom:1.5rem; font-size:1.1rem;">
+          Plombs de Précision<br>
+          <span style="color:var(--dp57-color);">Performance Garantie 🥇</span>
+        </p>
+        <a href="https://dp-plomb.fr/" class="neon-btn sponsor-btn" target="_blank">
+          → SITE OFFICIEL
+        </a>
+      </div>
+
+      <div id="emmacarpe" class="product-card">
+        <img src="https://image2url.com/r2/default/images/1769785088503-eac3b814-9b5d-4426-8d11-26aa69deac82.jpeg" class="product-photo" alt="Emmacarpe37">
+        <h3 class="product-name" style="background: linear-gradient(45deg, #ff69b4, var(--neon-blue));">EMMACARPE37</h3>
+        <p style="opacity:0.95; margin-bottom:1.5rem; font-size:1.1rem;">
+          Marque française carpe<br>
+          <span style="color:#ff69b4;">🩷 Ambassadeur Enzo Ducher 🖤</span>
+        </p>
+        <a href="https://emmacarpe37.fr/" class="neon-btn sponsor-btn" target="_blank">
+          → SITE OFFICIEL 
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENDURO KID'S CHALLENGE - MÊME COMPÉTITION -->
+  <section id="enduro" class="enduro-contact">
+    <h2 class="enduro-title">🏆 ENDURO KID'S CHALLENGE 🥈</h2>
+    <p style="font-family:'Oswald'; font-size:clamp(1.2rem,4vw,1.8rem); margin-bottom:3rem; opacity:0.9;">
+      Lac des Bretonnières - Joué-lès-Tours
+    </p>
+    <div class="enduro-grid">
+      <div class="enduro-item">
+        <img src="https://image2url.com/r2/default/images/1769785002888-ee08dda7-d900-4822-8cdb-64178dc52b8d.jpeg" style="width:100%; border-radius:20px; box-shadow:0 20px 40px rgba(255,215,0,0.5);" alt="Podium Enduro">
+        <h3 class="enduro-title">🥈 2ème Place</h3>
+        <p class="enduro-subtitle">
+          Le Duo Enzo sur le podium<br>
+          Enduro Kid's Challenge
+        </p>
+      </div>
+      
+      <div class="enduro-item">
+        <img src="https://i.ibb.co/wNmm2p9R/Capture-d-cran-2026-01-30-104520.png" style="width:100%; border-radius:20px; box-shadow:0 20px 40px rgba(255,215,0,0.5);" alt="Enduro Team">
+        <h3 class="enduro-title">👯‍♂️ Le Duo</h3>
+        <p class="enduro-subtitle">
+          Enduro Kid's Challenge<br>
+          Lac des Bretonnières
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3 style="font-family:'Bebas Neue'; font-size:clamp(2rem,6vw,3rem); margin-bottom:1rem;">🥇 LE DUO🥇</h3>
+    <p style="opacity:0.9; margin-bottom:1.5rem;">La Gaule Amboisienne 2026 | Centre-Val de Loire</p>
+    <div>
+      <a href="https://www.instagram.com/enzo_ducher/" target="_blank">@enzo_ducher</a>
+      <a href="https://www.instagram.com/enzo_sainton/" target="_blank">@enzo_sainton</a>
+      <a href="https://www.youtube.com/@Lapecheetlacarpe-ck9ze" target="_blank">YouTube</a>
+    </div>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('active');
+      navLinks.classList.toggle('active');
+      document.body.classList.toggle('menu-open');
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+        burger.classList.remove('active');
+        navLinks.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      });
+    });
+  </script>
+</body>
+</html>
